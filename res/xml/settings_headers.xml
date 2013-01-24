@@ -62,6 +62,13 @@
     <header android:id="@+id/interface_section"
         android:title="@string/header_category_interface" /> 
 
+    <!-- Interface -->
+    <header
+        android:id="@+id/interface_settings"
+        android:title="@string/interface_title"
+        android:fragment="com.android.settings.liquid.InterfaceSettings"
+        android:icon="@drawable/ic_liquid_interface" />
+
     <!-- Lockscreen -->
     <header
         android:id="@+id/lock_screen_settings"
@@ -69,7 +76,7 @@
         android:fragment="com.android.settings.liquid.LockscreenInterface"
         android:icon="@drawable/ic_liquid_lockscreen" />
 
-    <!-- Navigation Bar-->
+    <!-- Navigation -->
     <header
         android:id="@+id/nav_bar"
         android:title="@string/navbar_title"
@@ -80,8 +87,12 @@
     <header
         android:id="@+id/performance_settings"
         android:title="@string/performance_title"
-        android:fragment="com.android.settings.liquid.PerformanceSettings"
-        android:icon="@drawable/ic_liquid_performance" />
+        android:icon="@drawable/ic_liquid_performance" >
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="com.brewcrewfoo.performance"
+                android:targetClass="com.brewcrewfoo.performance.activities.MainActivity" />
+    </header>
 
     <!-- Powermenu -->
     <header
