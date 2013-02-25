@@ -62,7 +62,7 @@ public class InterfaceSettings extends SettingsPreferenceFragment
     private static final String KEY_NOTIF_STYLE = "notification_style";
     private static final String KEY_RECENTS_RAM_BAR = "recents_ram_bar";
     private static final String KEY_FORCE_DUAL_PANE = "force_dual_pane";
-    private static final String VIBRATION_MULTIPLIER = "vibrator_multiplier";
+    private static final String KEY_VIBRATION_MULTIPLIER = "vibrator_multiplier";
 
     private Preference mLcdDensity;
     private PreferenceCategory mAdvanced;
@@ -138,12 +138,11 @@ public class InterfaceSettings extends SettingsPreferenceFragment
             mRamBar.setSummary(getResources().getString(R.string.ram_bar_color_disabled));
         }
 
-
-        mVibrationMultiplier = (ListPreference) findPreference(VIBRATION_MULTIPLIER);
+        mVibrationMultiplier = (ListPreference) findPreference(KEY_VIBRATION_MULTIPLIER);
         if(mVibrationMultiplier != null) {
             mVibrationMultiplier.setOnPreferenceChangeListener(this);
-            String currentValue = Float.toString(Settings.Secure.getFloat(getActivity()
-                    .getContentResolver(), Settings.Secure.VIBRATION_MULTIPLIER, 1));
+            String currentValue = Float.toString(Settings.System.getFloat(getActivity()
+                    .getContentResolver(), Settings.System.VIBRATION_MULTIPLIER, 1));
             mVibrationMultiplier.setValue(currentValue);
             mVibrationMultiplier.setSummary(currentValue);
         }
@@ -166,8 +165,8 @@ public class InterfaceSettings extends SettingsPreferenceFragment
         if (preference == mVibrationMultiplier) {
             String currentValue = (String) newValue;
             float val = Float.parseFloat(currentValue);
-            Settings.Secure.putFloat(getActivity().getContentResolver(),
-                    Settings.Secure.VIBRATION_MULTIPLIER, val);
+            Settings.System.putFloat(getActivity().getContentResolver(),
+                    Settings.System.VIBRATION_MULTIPLIER, val);
             mVibrationMultiplier.setSummary(currentValue);
             return true;
         }

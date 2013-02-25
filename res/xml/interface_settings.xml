@@ -31,14 +31,15 @@
 		android:targetClass="de.robv.android.xposed.mods.appsettings.XposedModActivity" />
 	</PreferenceScreen>
 
-	<PreferenceScreen
-	    android:key="xposed_installer"
-            android:title="@string/xposed_install_title"
-	    android:summary="@string/xposed_install_summary" >
-	    <intent android:action="android.intent.action.MAIN"
-                android:targetPackage="de.robv.android.xposed.installer"
-		android:targetClass="de.robv.android.xposed.installer.XposedInstallerActivity" />
-	</PreferenceScreen>
+
+        <ListPreference
+            android:key="vibrator_multiplier"
+            android:persistent="false"
+            android:dialogTitle="@string/vibrator_multiplier_title"
+            android:title="@string/vibrator_multiplier_title"
+            android:entries="@array/vibration_multiplier_values"
+            android:entryValues="@array/vibration_multiplier_values" />
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:key="interface_advanced"
