@@ -32,19 +32,6 @@
 	</PreferenceScreen>
 
 
-        <ListPreference
-            android:key="vibrator_multiplier"
-            android:persistent="false"
-            android:dialogTitle="@string/vibrator_multiplier_title"
-            android:title="@string/vibrator_multiplier_title"
-            android:entries="@array/vibration_multiplier_values"
-            android:entryValues="@array/vibration_multiplier_values" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="interface_advanced"
-        android:title="@string/advanced_settings_title">
-
 	<PreferenceScreen
 	    android:key="chronus"
             android:title="@string/chronus_title"
@@ -53,6 +40,11 @@
                 android:targetPackage="com.cyanogenmod.lockclock"
 		android:targetClass="com.cyanogenmod.lockclock.preference.Preferences" />
 	</PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="interface_advanced"
+        android:title="@string/advanced_settings_title">
 
         <PreferenceScreen
             android:key="hardware_keys"
@@ -63,6 +55,14 @@
             android:key="notification_style"
             android:fragment="com.android.settings.liquid.NotificationDrawer"
             android:title="@string/notification_drawer_title" />
+
+        <ListPreference
+            android:key="vibrator_multiplier"
+            android:persistent="false"
+            android:dialogTitle="@string/vibrator_multiplier_title"
+            android:title="@string/vibrator_multiplier_title"
+            android:entries="@array/vibration_multiplier_values"
+            android:entryValues="@array/vibration_multiplier_values" />
 
         <PreferenceScreen
             android:key="recents_ram_bar"

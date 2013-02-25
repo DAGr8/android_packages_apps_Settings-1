@@ -4841,7 +4841,7 @@
     <string name="xposed_dpi_title">Per-App DPI Settings</string>
     <string name="xposed_dpi_summary">Customize the DPI values of specific applications</string>
     <string name="xposed_install_title">DPI Installer</string>
-    <string name="xposed_install_summary">*You must install this before using Per-App DPI Settings. Enable the settings in modules*</string>
+    <string name="xposed_install_summary">*Install this before using Per-App DPI-Settings*</string>
 
     <!-- Lockscreen Activities -->
     <string name="picker_activities">Activities</string>
