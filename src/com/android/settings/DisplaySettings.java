@@ -68,7 +68,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
     private static final String KEY_BATTERY_LIGHT = "battery_light";
     private static final String KEY_TOUCHKEY_LIGHT = "touchkey_light_timeout";
-    private static final String KEY_POWER_CRT_SCREEN_ON = "system_power_crt_screen_on";
+    private static final String KEY_POWER_CRT_MODE = "system_power_crt_mode";
     private static final String KEY_POWER_CRT_SCREEN_OFF = "system_power_crt_screen_off";
 
     // Strings used for building the summary
@@ -89,8 +89,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private PreferenceScreen mNotificationPulse;
     private PreferenceScreen mBatteryPulse;
     private ListPreference mTouchKeyLights;
+    private ListPreference mCrtMode;
     private CheckBoxPreference mCrtOff;
-    private CheckBoxPreference mCrtOn;
 
     private boolean mIsCrtOffChecked = false;
 
@@ -226,8 +226,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 com.android.internal.R.bool.config_animateScreenLights);
 
         // use this to enable/disable crt on feature
-        // crt only works if crt off is enabled
-        // total system failure if only crt on is enabled
         mIsCrtOffChecked = Settings.System.getInt(getActivity().getContentResolver(),
                 Settings.System.SYSTEM_POWER_ENABLE_CRT_OFF,
                 electronBeamFadesConfig ? 0 : 1) == 1;
@@ -235,10 +233,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         mCrtOff = (CheckBoxPreference) findPreference(KEY_POWER_CRT_SCREEN_OFF);
         mCrtOff.setChecked(mIsCrtOffChecked);
 
-        mCrtOn = (CheckBoxPreference) findPreference(KEY_POWER_CRT_SCREEN_ON);
-        mCrtOn.setChecked(Settings.System.getInt(getActivity().getContentResolver(),
-                Settings.System.SYSTEM_POWER_ENABLE_CRT_ON, 0) == 1);
-        mCrtOn.setEnabled(mIsCrtOffChecked);
+        mCrtMode = (ListPreference) prefSet.findPreference(KEY_POWER_CRT_MODE);
+        int crtMode = Settings.System.getInt(getActivity().getContentResolver(),
+                Settings.System.SYSTEM_POWER_CRT_MODE, 0);
+        mCrtMode.setValue(String.valueOf(crtMode));
+        mCrtMode.setSummary(mCrtMode.getEntry());
+        mCrtMode.setOnPreferenceChangeListener(this);
     }
 
     private void updateDisplayRotationPreferenceDescription() {
@@ -500,22 +500,9 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                     mWakeUpWhenPluggedOrUnplugged.isChecked() ? 1 : 0);
             return true;
         } else if (preference == mCrtOff) {
-            mIsCrtOffChecked = mCrtOff.isChecked();
             Settings.System.putInt(getActivity().getContentResolver(),
                     Settings.System.SYSTEM_POWER_ENABLE_CRT_OFF,
-                    mIsCrtOffChecked  ? 1 : 0);
-            // if crt off gets turned off, crt on gets turned off and disabled
-            if (!mIsCrtOffChecked) {
-                Settings.System.putInt(getActivity().getContentResolver(),
-                        Settings.System.SYSTEM_POWER_ENABLE_CRT_ON, 0);
-                mCrtOn.setChecked(false);
-            }
-            mCrtOn.setEnabled(mIsCrtOffChecked);
-            return true;
-        } else if (preference == mCrtOn) {
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.SYSTEM_POWER_ENABLE_CRT_ON,
-                    mCrtOn.isChecked() ? 1 : 0);
+                    mCrtOff.isChecked() ? 1 : 0);
             return true;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -537,6 +524,13 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             Settings.System.putInt(getActivity().getContentResolver(),
                     Settings.System.TOUCHKEY_LIGHT_DUR, touchKeyLights);
             mTouchKeyLights.setSummary(mTouchKeyLights.getEntries()[index]);
+        } else if (preference == mCrtMode) {
+            int crtMode = Integer.valueOf((String) objValue);
+            int index = mCrtMode.findIndexOfValue((String) objValue);
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.SYSTEM_POWER_CRT_MODE, crtMode);
+            mCrtMode.setSummary(mCrtMode.getEntries()[index]);
+            return true;
         }
         if (KEY_FONT_SIZE.equals(key)) {
             writeFontSizePreference(objValue);

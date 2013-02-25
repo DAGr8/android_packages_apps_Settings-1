@@ -1982,5 +1982,45 @@
         <item>BR</item>
     </string-array>
 
+    <string-array name="less_notification_sounds_entries">
+        <item>Default</item>
+        <item>3s</item>
+        <item>5s</item>
+        <item>10s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>45s</item>
+        <item>1m</item>
+        <item>2m</item>
+        <item>5m</item>
+    </string-array>
+
+    <string-array name="less_notification_sounds_values" translatable="false">
+        <item>0</item>
+        <item>3000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>45000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>300000</item>
+    </string-array>
+
+    <!-- CRT off animation mode -->
+    <string-array name="entries_system_power_crt_mode">
+        <item>@string/system_power_crt_mode_horizontal</item>
+        <item>@string/system_power_crt_mode_vertical</item>
+        <item>@string/system_power_crt_mode_both</item>
+    </string-array>
+
+    <string-array name="values_system_power_crt_mode" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <!-- **** LIQUIDSMOOTH EDITS FINISH **** -->
+
 </resources>

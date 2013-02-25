@@ -4732,9 +4732,12 @@
 
     <!-- Display Animation -->
     <string name="system_power_crt_screen_off_title">CRT Screen Off</string>
-    <string name="system_power_crt_screen_off_summary">Show electron beam when screen is turned off</string>
-    <string name="system_power_crt_screen_on_title">CRT Screen On</string>
-    <string name="system_power_crt_screen_on_summary">Show electron beam when screen is turned on</string>
+    <string name="system_power_crt_screen_off_summary">Show animation when screen is turned off</string>
+    <string name="system_power_crt_mode_title">CRT Animation Mode</string>
+    <string name="system_power_crt_mode_dialog_title">Show CRT Animation</string>
+    <string name="system_power_crt_mode_horizontal">Portrait Horizontal</string>
+    <string name="system_power_crt_mode_vertical">Portrait Vertical</string>
+    <string name="system_power_crt_mode_both">Orientation Dependent</string>
 
     <!-- Display Settings -->
     <string name="display_rotation_title">Rotation</string>
