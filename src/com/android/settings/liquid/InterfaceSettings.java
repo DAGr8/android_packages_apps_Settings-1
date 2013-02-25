@@ -138,7 +138,7 @@ public class InterfaceSettings extends SettingsPreferenceFragment
             mRamBar.setSummary(getResources().getString(R.string.ram_bar_color_disabled));
         }
 
-        /* Globally Change the Vibration Multiplier */
+
         mVibrationMultiplier = (ListPreference) findPreference(VIBRATION_MULTIPLIER);
         if(mVibrationMultiplier != null) {
             mVibrationMultiplier.setOnPreferenceChangeListener(this);
