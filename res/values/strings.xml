@@ -5595,5 +5595,9 @@
     <string name="pref_wifi_disable_hdcp_title">Skip HDCP negotiation</string>
     <string name="pref_wifi_disable_hdcp_summary">Try this option if you can connect but don\'t get any output</string>
 
+    <!-- Swap volume buttons when the screen is rotated by 90 or 180 degrees -->
+    <string name="swap_volume_buttons_title">Swap volume buttons</string>
+    <string name="swap_volume_buttons_summary">Swap volume buttons when the screen is rotated by 90 or 180 degrees</string>
+
     <!-- **** LIQUIDSMOOTH ADDITIONS FINISH **** -->
 </resources>
