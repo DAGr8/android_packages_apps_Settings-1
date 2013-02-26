@@ -4686,10 +4686,6 @@
     <string name="liquid_source_summary">Source at http://github.com/LiquidSmooth\nLiquidSmooth is fully open source code</string>
     <string name="liquid_website_summary">http://goo.im/devs/liquidsmooth\nFind all the latest builds and news here</string>
 
-    <!-- GooManager - UpdateCenter -->
-    <string name="update_center">Update center</string>
-    <string name="update_center_summary">Get the latest LiquidSmooth update</string>
-
     <!-- Brightness Customization -->
     <string name="custom_brightness_summary">View or change your custom brightness settings</string>
     <string name="light_sensor_current_value">Current light sensor value: <xliff:g id="light_level">%d</xliff:g> lux</string>
