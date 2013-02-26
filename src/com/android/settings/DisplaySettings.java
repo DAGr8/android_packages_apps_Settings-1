@@ -77,8 +77,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String ROTATION_ANGLE_180 = "180";
     private static final String ROTATION_ANGLE_270 = "270";
 
-    private static final String KEY_SWAP_VOLUME_BUTTONS = "swap_volume_buttons";
-
     private static final int DLG_GLOBAL_CHANGE_WARNING = 1;
 
     private DisplayManager mDisplayManager;
@@ -161,13 +159,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 == WifiDisplayStatus.FEATURE_STATE_UNAVAILABLE) {
             getPreferenceScreen().removePreference(mWifiDisplayPreference);
             mWifiDisplayPreference = null;
-
-	mSwapVolumeButtons = (CheckBoxPreference) prefSet.findPreference(KEY_SWAP_VOLUME_BUTTONS);
-
-        int swapVolumeKeys = Settings.System.getInt(getContentResolver(),
-                Settings.System.SWAP_VOLUME_KEYS_BY_ROTATE, 0);
-
-        mSwapVolumeButtons.setChecked(swapVolumeKeys != 0);
         }
 
         mWakeUpOptions = (PreferenceCategory) prefSet.findPreference(KEY_WAKEUP_CATEGORY);
@@ -580,10 +571,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             } else {
                 mFontSizePref.click();
             }
-        } else if (preference == mSwapVolumeButtons) {
-            Settings.System.putInt(getActivity().getApplicationContext().getContentResolver(),
-                    Settings.System.SWAP_VOLUME_KEYS_BY_ROTATE,
-	            mSwapVolumeButtons.isChecked() ? 1 : 0);
         }
         return false;
     }

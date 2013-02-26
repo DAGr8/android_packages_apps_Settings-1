@@ -108,12 +108,6 @@
             android:key="display_rotation"
             android:fragment="com.android.settings.liquid.DisplayRotation"
             android:title="@string/display_rotation_title" />
-
-        <CheckBoxPreference
-            android:key="swap_volume_buttons"
-            android:title="@string/swap_volume_buttons_title"
-            android:summary="@string/swap_volume_buttons_summary"
-            android:dependency="accelerometer" />
     </PreferenceCategory>
 
     <PreferenceCategory
