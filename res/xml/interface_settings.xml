@@ -32,6 +32,13 @@
 	</PreferenceScreen>
 
 
+        <ListPreference
+            android:key="pref_low_battery_warning_policy"
+            android:title="@string/pref_low_battery_warning_policy_title"
+            android:entries="@array/pref_low_battery_warning_policy_entries"
+            android:entryValues="@array/pref_low_battery_warning_policy_values"
+            android:defaultValue="3" />
+
 	<PreferenceScreen
 	    android:key="chronus"
             android:title="@string/chronus_title"

@@ -5590,5 +5590,8 @@
     <string name="swap_volume_buttons_title">Swap volume buttons</string>
     <string name="swap_volume_buttons_summary">Swap volume buttons when the screen is rotated by 90 or 180 degrees</string>
 
+   <!-- Low Battery Warning -->
+   <string name="pref_low_battery_warning_policy_title">Low battery warning</string>
+
     <!-- **** LIQUIDSMOOTH ADDITIONS FINISH **** -->
 </resources>

@@ -63,6 +63,7 @@ public class InterfaceSettings extends SettingsPreferenceFragment
     private static final String KEY_RECENTS_RAM_BAR = "recents_ram_bar";
     private static final String KEY_FORCE_DUAL_PANE = "force_dual_pane";
     private static final String KEY_VIBRATION_MULTIPLIER = "vibrator_multiplier";
+    private static final String KEY_LOW_BATTERY_WARNING_POLICY = "pref_low_battery_warning_policy";
 
     private Preference mLcdDensity;
     private PreferenceCategory mAdvanced;
@@ -71,6 +72,7 @@ public class InterfaceSettings extends SettingsPreferenceFragment
     private Preference mRamBar;
     private CheckBoxPreference mDualPane;
     private ListPreference mVibrationMultiplier;
+    private ListPreference mLowBatteryWarning;
 
     int newDensityValue;
     DensityChanger densityFragment;
@@ -145,6 +147,14 @@ public class InterfaceSettings extends SettingsPreferenceFragment
                     .getContentResolver(), Settings.System.VIBRATION_MULTIPLIER, 1));
             mVibrationMultiplier.setValue(currentValue);
             mVibrationMultiplier.setSummary(currentValue);
+
+        mLowBatteryWarning = (ListPreference) findPreference(KEY_LOW_BATTERY_WARNING_POLICY);
+        int lowBatteryWarning = Settings.System.getInt(getActivity().getContentResolver(),
+                                    Settings.System.POWER_UI_LOW_BATTERY_WARNING_POLICY, 3);
+        mLowBatteryWarning.setValue(String.valueOf(lowBatteryWarning));
+        mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntry());
+        mLowBatteryWarning.setOnPreferenceChangeListener(this);
+
         }
     }
 
@@ -168,6 +178,13 @@ public class InterfaceSettings extends SettingsPreferenceFragment
             Settings.System.putFloat(getActivity().getContentResolver(),
                     Settings.System.VIBRATION_MULTIPLIER, val);
             mVibrationMultiplier.setSummary(currentValue);
+            return true;
+        } else if (preference == mLowBatteryWarning) {
+            int lowBatteryWarning = Integer.valueOf((String) newValue);
+            int index = mLowBatteryWarning.findIndexOfValue((String) newValue);
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.POWER_UI_LOW_BATTERY_WARNING_POLICY, lowBatteryWarning);
+            mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntries()[index]);
             return true;
         }
         return false;
