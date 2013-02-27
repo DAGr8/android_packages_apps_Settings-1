@@ -4549,7 +4549,6 @@
     <string name="profile_lockmode_disabled_summary">Lockscreen is disabled</string>
     <string name="profile_airplanemode_title">Airplane mode</string>
     <string name="profile_disable_screen_lock_summary">Disable lock screen security while this profile is active</string>
-
     <string name="vibrator_type_ringer">Calls</string>
     <string name="vibrator_type_notification">Notifications</string>
 
@@ -4581,10 +4580,6 @@
     <string name="profile_unknown_nfc_tag">Unknown profile</string>
     <string name="profile_add_nfc_text">This NFC tag refers to an unknown profile. Attaching this NFC tag to an existing profile will allow for selecting the profile in the future.</string>
     <string name="profile_select">Select profile</string>
-
-    <!-- Kill app long-press back -->
-    <string name="kill_app_longpress_back">Kill app back button</string>
-    <string name="kill_app_longpress_back_summary">Kill the foreground app by long-pressing the back key</string>
 
     <string name="increasing_ring_title">Ascending ringtone</string>
     <!-- Sound settings screen, the caption of the checkbox for making incoming calls increase in volume -->
