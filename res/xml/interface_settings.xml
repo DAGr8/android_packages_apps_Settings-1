@@ -39,6 +39,12 @@
             android:entryValues="@array/pref_low_battery_warning_policy_values"
             android:defaultValue="3" />
 
+        <ListPreference
+            android:key="notifications_behaviour"
+            android:title="@string/notification_behaviour_title"
+            android:entries="@array/notifs_beh_entries"
+            android:entryValues="@array/notifs_beh_values" />
+
 	<PreferenceScreen
 	    android:key="chronus"
             android:title="@string/chronus_title"

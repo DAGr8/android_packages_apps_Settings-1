@@ -5593,5 +5593,8 @@
    <!-- Low Battery Warning -->
    <string name="pref_low_battery_warning_policy_title">Low battery warning</string>
 
+   <!-- Notification Behavior Preferences -->
+   <string name="notification_behaviour_title">Notification behavior</string>
+
     <!-- **** LIQUIDSMOOTH ADDITIONS FINISH **** -->
 </resources>
