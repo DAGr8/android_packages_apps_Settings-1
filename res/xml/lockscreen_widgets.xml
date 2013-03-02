@@ -19,7 +19,7 @@
     android:title="@string/lockscreen_widgets_title" >
 
     <PreferenceCategory
-        android:key="lock_screen_widgets"
+        android:key="lockscreen_widgets_group"
         android:title="@string/general_settings_title">
 
         <CheckBoxPreference
