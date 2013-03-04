@@ -267,6 +267,13 @@
         android:icon="@drawable/ic_settings_accessibility"
         android:title="@string/accessibility_settings" />
 
+    <!-- Superuser -->
+    <header
+        android:id="@+id/superuser"
+        android:fragment="com.android.settings.liquid.superuser.PolicyNativeFragment"
+        android:icon="@drawable/ic_liquid_superuser"
+        android:title="@string/superuser" />
+
     <!-- Development -->
     <header
         android:id="@+id/development_settings"
