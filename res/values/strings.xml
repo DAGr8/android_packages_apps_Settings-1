@@ -4659,6 +4659,7 @@
     <string name="power_widget_title">Powerwidget</string>
     <string name="quick_settings_title">Quicksettings</string>
     <string name="status_bar_title">Statusbar</string>
+    <string name="tablet_settings_title">Tablet</string>
     <string name="themes_settings_title">Themes</string>
     <string name="additional_settings_title">Additional</string>
 
@@ -4795,6 +4796,8 @@
     <string name="vibrator_multiplier_title">Vibration Multiplier</string>
     <string name="notification_show_wifi_ssid_title">Show Wifi Network</string>
     <string name="notification_show_wifi_ssid_summary">Display name of current wifi network</string>
+    <string name="hide_extras">Hide Extras</string>
+    <string name="hide_extras_summary">Hide systembar stuff (restart UI)</string>
 
     <!-- Keyboard Input -->
     <string name="ime_switcher_notify">Selector notification</string>
@@ -4837,6 +4840,13 @@
     <string name="custom_density_dialog_summary">"Changing your LCD density can cause unexpected app behavior. If you encounter market app incompatibility please return here and restart the process from step 1."</string>
     <string name="custom_density_dialog_button_got">Got It!</string>
     <string name="custom_density_dialog_button_reboot">Reboot Now</string>
+
+    <!-- Tablet Mode -->
+    <string name="user_mode_ui">Tablet Mode</string>
+    <string name="user_mode_ui_summary">Change navbar and statusbar style</string>
+    <string name="phone_mode_ui">Phone (navbar to side in landscape)</string>
+    <string name="tablet_mode_ui">Tablet (combined navbar and systembar)</string>
+    <string name="phablet_mode_ui">Phablet (navbar at bottom in landscape)</string>
 
     <!-- Xposed Density -->
     <string name="xposed_dpi_title">Xposed DPI Settings</string>
@@ -5087,6 +5097,8 @@
     <string name="glow_times_normal">Normal</string>
     <string name="navbar_can_move">Show Landscape</string>
     <string name="navbar_can_move_summary">Shows navbar in lanscape on bottom</string>
+    <string name="width_port_title">Combined Width Port</string>
+    <string name="width_land_title">Combined Width Land</string>
 
     <!-- Navigation Rings -->
     <string name="navbar_ring_cat">Navring</string>
