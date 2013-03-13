@@ -38,6 +38,9 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.provider.Settings;
 import android.text.Spannable;
 import android.view.Display;
@@ -52,6 +55,7 @@ import android.widget.EditText;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
+import com.android.settings.util.Helpers;
 import com.android.settings.Utils;
 
 public class InterfaceSettings extends SettingsPreferenceFragment implements OnPreferenceChangeListener {
@@ -65,6 +69,8 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
     private static final String KEY_FORCE_DUAL_PANE = "force_dual_pane";
     private static final String KEY_VIBRATION_MULTIPLIER = "vibrator_multiplier";
     private static final String KEY_LOW_BATTERY_WARNING_POLICY = "pref_low_battery_warning_policy";
+    private static final String KEY_USER_MODE_UI = "user_mode_ui";
+    private static final String KEY_HIDE_EXTRAS = "hide_extras";
 
     private Preference mLcdDensity;
     private PreferenceCategory mAdvanced;
@@ -74,6 +80,8 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
     private CheckBoxPreference mDualPane;
     private ListPreference mVibrationMultiplier;
     private ListPreference mLowBatteryWarning;
+    private ListPreference mUserModeUI;
+    private CheckBoxPreference mHideExtras;
 
     private int newDensityValue;
     DensityChanger densityFragment;
@@ -98,8 +106,6 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
 
         mAdvanced = (PreferenceCategory) prefs.findPreference(ADVANCED_SETTINGS);
         mCustomLabel = findPreference(KEY_CARRIER_LABEL);
-        mCustomLabel.setOnPreferenceClickListener(mCustomLabelClicked);
-
         updateCustomLabelTextSummary();
 
         // Only show the hardware keys config on a device that does not have a navbar
@@ -126,6 +132,17 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
         boolean dualPaneMode = Settings.System.getInt(getActivity().getContentResolver(),
                 Settings.System.DUAL_PANE_PREFS, (preferDualPane ? 1 : 0)) == 1;
         mDualPane.setChecked(dualPaneMode);
+
+        mHideExtras = (CheckBoxPreference) findPreference(KEY_HIDE_EXTRAS);
+        mHideExtras.setChecked(Settings.System.getInt(getActivity().getContentResolver(),
+                Settings.System.HIDE_EXTRAS_SYSTEM_BAR, 0) == 1);
+
+        mUserModeUI = (ListPreference) findPreference(KEY_USER_MODE_UI);
+        int uiMode = Settings.System.getInt(getActivity().getContentResolver(),
+                Settings.System.CURRENT_UI_MODE, 0);
+        mUserModeUI.setValue(Integer.toString(Settings.System.getInt(
+                getActivity().getContentResolver(), Settings.System.USER_UI_MODE, uiMode)));
+        mUserModeUI.setOnPreferenceChangeListener(this);
     }
 
     private void updateCustomLabelTextSummary() {
@@ -198,13 +215,23 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
                     Settings.System.DUAL_PANE_PREFS,
                     ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
             return true;
+        } else if (preference == mUserModeUI) {
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.USER_UI_MODE, Integer.parseInt((String) newValue));
+            Helpers.restartSystemUI();
+        } else if (preference == mHideExtras) {
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.HIDE_EXTRAS_SYSTEM_BAR,
+                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
+            return true;
         }
         return false;
     }
 
-    public OnPreferenceClickListener mCustomLabelClicked = new OnPreferenceClickListener() {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
+            Preference preference) {
+        if (preference == mCustomLabel) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setTitle(R.string.custom_carrier_label_title);
             alert.setMessage(R.string.custom_carrier_label_explain);
@@ -233,9 +260,14 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
             });
 
             alert.show();
+        } else if (preference == mHideExtras) {
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.HIDE_EXTRAS_SYSTEM_BAR,
+                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
             return true;
         }
-    };
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
 
 }
 

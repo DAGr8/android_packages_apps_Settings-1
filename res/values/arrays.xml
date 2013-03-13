@@ -913,6 +913,19 @@
         <item>320</item>
     </string-array>
 
+    <!-- Tablet Mode -->
+    <string-array name="user_mode_ui_entries" translatable="false">
+        <item>@string/phone_mode_ui</item>
+        <item>@string/tablet_mode_ui</item>
+        <item>@string/phablet_mode_ui</item>
+    </string-array>
+
+    <string-array name="user_mode_ui_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <!-- Lockscreen Settings -->
     <string-array name="lockscreen_battery_status_entries">
         <item>@string/lockscreen_battery_status_charging</item>
