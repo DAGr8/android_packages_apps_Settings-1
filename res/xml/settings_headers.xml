@@ -165,6 +165,12 @@
         android:icon="@drawable/ic_settings_storage"
         android:title="@string/storage_settings" />
 
+    <!-- TRDS -->
+    <header
+        android:id="@+id/trds_settings"
+        android:icon="@drawable/ic_liquid_trds"
+        android:title="@string/trds_settings_title" />
+
     <!-- Themes -->
     <header
         android:id="@+id/themes_settings"
