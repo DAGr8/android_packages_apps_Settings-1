@@ -75,10 +75,16 @@
             android:fragment="com.android.settings.liquid.NotificationDrawer"
             android:title="@string/notification_drawer_title" />
 
-        <PreferenceScreen
-            android:key="recents_ram_bar"
-            android:fragment="com.android.settings.liquid.RamBar"
-            android:title="@string/ram_bar" />
+        <CheckBoxPreference
+            android:key="recent_kill_all"
+            android:title="@string/recent_kill_all"
+            android:summary="@string/recent_kill_all_summary" />
+
+        <CheckBoxPreference
+            android:key="ram_usage_bar"
+            android:title="@string/ram_bar"
+            android:summary="@string/ram_bar_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
