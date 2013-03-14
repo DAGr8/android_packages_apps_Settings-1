@@ -5721,5 +5721,11 @@
     <!-- TRDS Settings -->
     <string name="trds_settings_title">The Real Dark Liquid</string>
 
+    <!-- Breathing Notifications -->
+    <string name="mms_breath">Breathing SMS</string>
+    <string name="mms_breath_summary">Will give your sms notifications a breathing effect on the statusbar.</string>
+    <string name="missed_call_breath">Breathing Missed Call</string>
+    <string name="missed_call_breath_summary">Will give your missed call notifications a breathing effect on the statusbar.</string>
+
     <!-- **** LIQUIDSMOOTH ADDITIONS FINISH **** -->
 </resources>
