@@ -4797,7 +4797,19 @@
     <string name="notification_show_wifi_ssid_title">Show Wifi Network</string>
     <string name="notification_show_wifi_ssid_summary">Display name of current wifi network</string>
     <string name="hide_extras">Hide Extras</string>
-    <string name="hide_extras_summary">Hide systembar stuff (restart UI)</string>
+    <string name="hide_extras_summary">Hides systembar extra stuff</string>
+    <string name="ram_bar">Recents Rambar</string>
+    <string name="ram_bar_summary">Show memory usage in recents menu</string>
+    <string name="recent_kill_all">Clear Recents</string>
+    <string name="recent_kill_all_summary">Display button to kill all recents</string>
+    <string name="user_mode_ui">Tablet Mode</string>
+    <string name="user_mode_ui_summary">Change navbar and statusbar style</string>
+    <string name="phone_mode_ui">Phone (navbar to side in landscape)</string>
+    <string name="tablet_mode_ui">Tablet (combined navbar and systembar)</string>
+    <string name="xposed_dpi_title">Xposed DPI Settings</string>
+    <string name="xposed_dpi_summary">Customize DPI values of specific apps</string>
+    <string name="xposed_install_title">Xposed DPI Installer</string>
+    <string name="xposed_install_summary">*Install before using DPI settings app*</string>
 
     <!-- Keyboard Input -->
     <string name="ime_switcher_notify">Selector notification</string>
@@ -4841,19 +4853,6 @@
     <string name="custom_density_dialog_button_got">Got It!</string>
     <string name="custom_density_dialog_button_reboot">Reboot Now</string>
 
-    <!-- Tablet Mode -->
-    <string name="user_mode_ui">Tablet Mode</string>
-    <string name="user_mode_ui_summary">Change navbar and statusbar style</string>
-    <string name="phone_mode_ui">Phone (navbar to side in landscape)</string>
-    <string name="tablet_mode_ui">Tablet (combined navbar and systembar)</string>
-    <string name="phablet_mode_ui">Phablet (navbar at bottom in landscape)</string>
-
-    <!-- Xposed Density -->
-    <string name="xposed_dpi_title">Xposed DPI Settings</string>
-    <string name="xposed_dpi_summary">Customize DPI values of specific apps</string>
-    <string name="xposed_install_title">Xposed DPI Installer</string>
-    <string name="xposed_install_summary">*Install before using DPI settings app*</string>
-
     <!-- Lockscreen Activities -->
     <string name="picker_activities">Activities</string>
     <string name="select_custom_app_title">Select Application</string>
@@ -4895,8 +4894,8 @@
     <string name="lockscreen_buttons_previous">Previous Song</string>
     <string name="lockscreen_buttons_playpause">Play/Pause Music</string>
     <string name="lockscreen_buttons_toggle_sound">Toggle Sound</string>
-    <string name="lockscreen_buttons_camera">Launch camera</string>
-    <string name="lockscreen_buttons_power_off">Power off</string>
+    <string name="lockscreen_buttons_camera">Launch Camera</string>
+    <string name="lockscreen_buttons_power_off">Power Off</string>
 
     <!-- Lockscreen Delay -->
     <string name="delay_and_timeout_title">Delay</string>
@@ -5492,18 +5491,10 @@
     <string name="tiles_per_row_title">Tiles Per Row</string>
     <string name="tiles_per_row_duplicate_landscape_title">Landscape Quantity</string>
     <string name="tiles_per_row_duplicate_landscape_summary">Landscape view doubles tiles per row</string>
-    <string name="quick_tiles_bg_color_title">Background Color</string>
-    <string name="quick_tiles_bg_pressed_color_title">Tiles pressed background color</string>
+    <string name="quick_tiles_bg_color_title">Normal Background Color</string>
+    <string name="quick_tiles_bg_pressed_color_title">Pressed Background Color</string>
     <string name="quick_tiles_text_color_title">Text Color</string>
     <string name="quick_settings_style_reset">Reset Colors</string>
-
-    <!-- Kill All Recents -->
-    <string name="recent_kill_all">Enable kill-all-button</string>
-    <string name="recent_kill_all_summary">Displays a button to kill all apps on recents window</string>
-
-    <!-- Recents Rambar -->
-    <string name="ram_bar">Recents RAM Bar</string>
-    <string name="ram_bar_summary">Shows RAM usage in the recents menu</string>
 
     <!-- Root Access -->
     <string name="root_access">Root access</string>
@@ -5704,17 +5695,17 @@
     <string name="superuser">Superuser</string>
 
     <!-- Status bar notification icon opacity -->
-    <string name="status_bar_icon_opacity">Notification icon opacity</string>
-    <string name="status_bar_icon_opacity_summary">Sets opacity of status bar notification icons</string>
+    <string name="status_bar_icon_opacity">Statusbar Icons</string>
+    <string name="status_bar_icon_opacity_summary">Sets opacity of statusbar icons</string>
 
     <!-- TRDS Settings -->
     <string name="trds_settings_title">Dark Liquid</string>
 
     <!-- Breathing Notifications -->
     <string name="mms_breath">Breathing SMS</string>
-    <string name="mms_breath_summary">Will give your sms notifications a breathing effect on the statusbar.</string>
+    <string name="mms_breath_summary">Show sms icon with breathing</string>
     <string name="missed_call_breath">Breathing Missed Call</string>
-    <string name="missed_call_breath_summary">Will give your missed call notifications a breathing effect on the statusbar.</string>
+    <string name="missed_call_breath_summary">Show missed call with breathing</string>
 
     <!-- **** LIQUIDSMOOTH ADDITIONS FINISH **** -->
 </resources>

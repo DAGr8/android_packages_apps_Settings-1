@@ -55,7 +55,8 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.util.Helpers;
 import com.android.settings.Utils;
 
-public class InterfaceSettings extends SettingsPreferenceFragment implements OnPreferenceChangeListener {
+public class InterfaceSettings extends SettingsPreferenceFragment
+    implements OnPreferenceChangeListener {
 
     public static final String TAG = "UserInterface";
     private static final String ADVANCED_SETTINGS = "interface_advanced";
@@ -67,8 +68,8 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
     private static final String KEY_LOW_BATTERY_WARNING_POLICY = "pref_low_battery_warning_policy";
     private static final String KEY_USER_MODE_UI = "user_mode_ui";
     private static final String KEY_HIDE_EXTRAS = "hide_extras";
-    private static final String PREF_RECENT_KILL_ALL = "recent_kill_all";
-    private static final String PREF_RAM_USAGE_BAR = "ram_usage_bar";
+    private static final String KEY_RECENT_KILL_ALL = "recent_kill_all";
+    private static final String KEY_RAM_USAGE_BAR = "ram_usage_bar";
 
     private Preference mLcdDensity;
     private PreferenceCategory mAdvanced;
@@ -110,12 +111,14 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
         updateCustomLabelTextSummary();
 
         mVibrationMultiplier = (ListPreference) findPreference(KEY_VIBRATION_MULTIPLIER);
-        if(mVibrationMultiplier != null) {
+
+        if (mVibrationMultiplier != null) {
             mVibrationMultiplier.setOnPreferenceChangeListener(this);
             String currentValue = Float.toString(Settings.System.getFloat(getActivity()
                     .getContentResolver(), Settings.System.VIBRATION_MULTIPLIER, 1));
             mVibrationMultiplier.setValue(currentValue);
             mVibrationMultiplier.setSummary(currentValue);
+        }
 
         mLowBatteryWarning = (ListPreference) findPreference(KEY_LOW_BATTERY_WARNING_POLICY);
         mLowBatteryWarning.setOnPreferenceChangeListener(this);
@@ -124,13 +127,13 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
         mLowBatteryWarning.setValue(String.valueOf(lowBatteryWarning));
         mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntry());
 
-        mRecentKillAll = (CheckBoxPreference) findPreference(PREF_RECENT_KILL_ALL);
+        mRecentKillAll = (CheckBoxPreference) findPreference(KEY_RECENT_KILL_ALL);
         mRecentKillAll.setChecked(Settings.System.getInt(getActivity().getContentResolver(),
-                Settings.System.RECENT_KILL_ALL_BUTTON, false));
+                Settings.System.RECENT_KILL_ALL_BUTTON, 0) == 1);
 
-        mRamBar = (CheckBoxPreference) findPreference(PREF_RAM_USAGE_BAR);
+        mRamBar = (CheckBoxPreference) findPreference(KEY_RAM_USAGE_BAR);
         mRamBar.setChecked(Settings.System.getInt(getActivity().getContentResolver(),
-                Settings.System.RAM_USAGE_BAR, false));
+                Settings.System.RAM_USAGE_BAR, 0) == 1);
 
         // Only show the hardware keys config on a device that does not have a navbar
         IWindowManager windowManager = IWindowManager.Stub.asInterface(
@@ -145,7 +148,6 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
         }
 
         mNotifStyle = findPreference(KEY_NOTIF_STYLE);
-
         mDualPane = (CheckBoxPreference) findPreference(KEY_FORCE_DUAL_PANE);
         mDualPane.setOnPreferenceChangeListener(this);
         boolean preferDualPane = getResources().getBoolean(
@@ -164,6 +166,7 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
         mUserModeUI.setValue(Integer.toString(Settings.System.getInt(
                 getActivity().getContentResolver(), Settings.System.USER_UI_MODE, uiMode)));
         mUserModeUI.setOnPreferenceChangeListener(this);
+    }
 
     public void updateCustomLabelTextSummary() {
         mCustomLabelText = Settings.System.getString(getActivity().getContentResolver(),
@@ -202,14 +205,14 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
                     ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
             return true;
         } else if (preference == mRecentKillAll) {
-            boolean checked = ((CheckBoxPreference)preference).isChecked();
-            Settings.System.putBoolean(getActivity().getContentResolver(),
-                    Settings.System.RECENT_KILL_ALL_BUTTON, checked ? true : false);
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.RECENT_KILL_ALL_BUTTON,
+                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
             return true;
         } else if (preference == mRamBar) {
-            boolean checked = ((CheckBoxPreference)preference).isChecked();
-            Settings.System.putBoolean(getActivity().getContentResolver(),
-                    Settings.System.RAM_USAGE_BAR, checked ? true : false);
+            Settings.System.putInt(getActivity().getContentResolver(),
+                    Settings.System.RAM_USAGE_BAR,
+                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
             return true;
         }
         return false;
@@ -244,9 +247,8 @@ public class InterfaceSettings extends SettingsPreferenceFragment implements OnP
                     // Canceled.
                 }
             });
-
             alert.show();
             return true;
         }
-    }
+    };
 }
