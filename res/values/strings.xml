@@ -5105,7 +5105,31 @@
     <string name="navbar_can_move_summary">Shows navbar in lanscape on bottom</string>
     <string name="width_port_title">Combined Width Port</string>
     <string name="width_land_title">Combined Width Land</string>
-
+    <string name="navbar_hide_enable_title">Hidden Navbar Enable</string>
+    <string name="drag_handle_opacity_title">Drag Handle Opacity</string>
+    <string name="drag_handle_width_title">Drag Handle Width</string>
+    <string name="title_navbar_timeout">Hidden Navbar Timeout</string>
+    <string name="summary_navbar_timeout">Timeout time for Hidden Navbar Window</string>
+    <string name="navbar_hide">NavBar Hide Options</string>
+    
+    <string-array name="hide_navbar_timeout_entries" translatable="false">
+        <item>Never</item>
+        <item>1.5 Sec</item>
+        <item>3 Sec</item>
+        <item>5 Sec</item>
+        <item>10 Sec</item>
+        <item>15 Sec</item>
+        <item>30 Sec</item>
+    </string-array>
+    <string-array name="hide_navbar_timeout_values" translatable="false">
+        <item>0</item>
+        <item>1500</item>
+        <item>3000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>15000</item>
+        <item>30000</item>
+    </string-array>
     <!-- Navigation Rings -->
     <string name="navbar_ring_cat">Navring</string>
     <string name="interface_softkey_settings">Softkeys</string>
