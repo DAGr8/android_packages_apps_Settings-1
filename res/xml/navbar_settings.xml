@@ -56,11 +56,11 @@
                 android:key="navbar_hide_enable"
                 android:title="@string/navbar_hide_enable_title" />
 
-        <com.aokp.romcontrol.widgets.SeekBarPreference
+        <com.android.settings.widget.SeekBarPreference
             android:key="drag_handle_opacity"
             android:title="@string/drag_handle_opacity_title"/>
 
-        <com.aokp.romcontrol.widgets.SeekBarPreference
+        <com.android.settings.widget.SeekBarPreference
             android:key="drag_handle_width"
             android:title="@string/drag_handle_width_title"/>
 
