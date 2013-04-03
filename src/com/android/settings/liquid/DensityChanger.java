@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2012 The LiquidSmooth Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.android.settings.liquid;
 
@@ -23,26 +38,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.R;
-import com.android.settings.util.CMDProcessor;
-import com.android.settings.util.CMDProcessor.CommandResult;
 import com.android.settings.util.Helpers;
+import com.android.settings.util.CMDProcessor;
+import com.android.settings.SettingsPreferenceFragment;
+import com.android.settings.util.CMDProcessor.CommandResult;
 
-public class DensityChanger extends SettingsPreferenceFragment implements
-        OnPreferenceChangeListener {
+public class DensityChanger extends SettingsPreferenceFragment
+                implements OnPreferenceChangeListener {
 
     private static final String TAG = "DensityChanger";
-
     ListPreference mStockDensity;
     Preference mReboot;
     Preference mClearMarketData;
-    Preference mRebootClearData;
     Preference mOpenMarket;
     ListPreference mCustomDensity;
 
     private static final int MSG_DATA_CLEARED = 500;
-
     private static final int DIALOG_DENSITY = 101;
     private static final int DIALOG_WARN_DENSITY = 102;
 
@@ -72,7 +84,6 @@ public class DensityChanger extends SettingsPreferenceFragment implements
 
         mReboot = findPreference("reboot");
         mClearMarketData = findPreference("clear_market_data");
-        mRebootClearData = findPreference("reboot_cleardata");
         mOpenMarket = findPreference("open_market");
 
         mCustomDensity = (ListPreference) findPreference("lcd_density");
@@ -82,6 +93,7 @@ public class DensityChanger extends SettingsPreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        mClearMarketData.setSummary("");
     }
 
     @Override
@@ -98,21 +110,14 @@ public class DensityChanger extends SettingsPreferenceFragment implements
             return true;
 
         } else if (preference == mClearMarketData) {
-
             new ClearMarketDataTask().execute("");
             return true;
-
-        } else if (preference == mRebootClearData) {
-            PowerManager pm = (PowerManager) getActivity()
-                    .getSystemService(Context.POWER_SERVICE);
-            pm.reboot("Clear market data");
-            return true;
-
         } else if (preference == mOpenMarket) {
             Intent openMarket = new Intent(Intent.ACTION_MAIN)
                     .addCategory(Intent.CATEGORY_APP_MARKET)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ComponentName activityName = openMarket.resolveActivity(getActivity()
+
+                ComponentName activityName = openMarket.resolveActivity(getActivity()
                     .getPackageManager());
             if (activityName != null) {
                 mContext.startActivity(openMarket);
@@ -121,9 +126,7 @@ public class DensityChanger extends SettingsPreferenceFragment implements
                         .setSummary(getResources().getString(R.string.open_market_summary_could_not_open));
             }
             return true;
-
         }
-
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
@@ -235,42 +238,20 @@ public class DensityChanger extends SettingsPreferenceFragment implements
     private class ClearMarketDataTask extends AsyncTask<String, Void, Boolean> {
         protected Boolean doInBackground(String... stuff) {
             String vending = "/data/data/com.android.vending/";
-            String gms = "/data/data/com.google.android.gms/";
-            String gsf = "/data/data/com.google.android.gsf/";
 
             CommandResult cr = new CMDProcessor().su.runWaitFor("ls " + vending);
-            CommandResult cr_gms = new CMDProcessor().su.runWaitFor("ls " + gms);
-            CommandResult cr_gsf = new CMDProcessor().su.runWaitFor("ls " + gsf);
 
-            if (cr.stdout == null || cr_gms.stdout == null || cr_gsf.stdout == null)
+            if (cr.stdout == null)
                 return false;
 
             for (String dir : cr.stdout.split("\n")) {
                 if (!dir.equals("lib")) {
                     String c = "rm -r " + vending + dir;
-                    // Log.i(TAG, c);
                     if (!new CMDProcessor().su.runWaitFor(c).success())
                         return false;
                 }
             }
 
-            for (String dir_gms : cr_gms.stdout.split("\n")) {
-                if (!dir_gms.equals("lib")) {
-                    String c_gms = "rm -r " + gms + dir_gms;
-                    // Log.i(TAG, c);
-                    if (!new CMDProcessor().su.runWaitFor(c_gms).success())
-                        return false;
-                }
-            }
-
-            for (String dir_gsf : cr_gsf.stdout.split("\n")) {
-                if (!dir_gsf.equals("lib")) {
-                    String c_gsf = "rm -r " + gsf + dir_gsf;
-                    // Log.i(TAG, c);
-                    if (!new CMDProcessor().su.runWaitFor(c_gsf).success())
-                        return false;
-                }
-            }
             return true;
         }
 

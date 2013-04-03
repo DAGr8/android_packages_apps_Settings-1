@@ -1683,6 +1683,45 @@
 
         <activity android:name=".profiles.NFCProfileSelect" />
 
+
+        <activity
+            android:name=".liquid.DensityChanger"
+            android:label="@string/lcd_density_wizard" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".liquid.InterfaceSettings" />
+
+        <activity android:name=".liquid.LockscreenTargets" />
+
+        <activity android:name=".liquid.LockscreenInterface" />
+
+        <activity android:name=".liquid.LockscreenButtons" />
+
+        <activity android:name=".liquid.Navbar" />
+
+        <activity android:name=".liquid.NavRingTargets" />
+
+        <activity android:name=".liquid.PowerMenu" />
+        
+        <activity android:name=".liquid.NotificationDrawerStyle" />
+
+	    <activity android:name=".liquid.RamBar" />
+
+        <activity android:name=".liquid.QuickSettings" />
+
+        <activity android:name="Settings$ASSRamBarActivity"
+                android:label="@string/ram_bar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.slim.RamBar" />
+        </activity>
+
         <activity android:name=".profiles.NFCProfile"
                 android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -1692,8 +1731,31 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="Settings$DreamSettingsActivity"
-                android:label="@string/screensaver_settings_title"
+        <activity android:name=".notificationlight.NotificationLightSettings" />
+
+        <activity android:name=".notificationlight.BatteryLightSettings" />
+
+        <activity android:name=".ApnEditor" />
+
+        <!-- LiquidSmooth Activities End -->
+
+        <!-- Pseudo-activity used to provide an intent-filter entry point to encryption settings -->
+        <activity android:name="Settings$CryptKeeperSettingsActivity"
+                android:label="@string/crypt_keeper_encrypt_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.app.action.START_ENCRYPTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.CryptKeeperSettings" />
+            <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
+                android:resource="@id/security_settings" />
+        </activity>
+
+        <activity android:name="Settings$DataUsageSummaryActivity"
+                android:label="@string/data_usage_summary_title"
+                android:uiOptions="none"
                 android:taskAffinity=""
                 android:excludeFromRecents="true">
             <intent-filter>

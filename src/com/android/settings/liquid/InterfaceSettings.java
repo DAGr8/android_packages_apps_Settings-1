@@ -16,26 +16,35 @@
 
 package com.android.settings.liquid;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.Random;
+
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.ContentResolver;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceCategory;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Spannable;
 import android.view.Display;
@@ -43,55 +52,43 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.IWindowManager;
 import android.view.Window;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.view.View;
 import android.widget.EditText;
 
 import com.android.settings.R;
-import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
+import com.android.settings.util.Helpers;
+import com.android.settings.util.CMDProcessor;
+import com.android.settings.SettingsPreferenceFragment;
 
 public class InterfaceSettings extends SettingsPreferenceFragment
-	implements OnPreferenceChangeListener {
+			implements Preference.OnPreferenceChangeListener {
 
-    public static final String TAG = "UserInterface";
-    private static final String ADVANCED_SETTINGS = "interface_advanced";
-    private static final String KEY_CARRIER_LABEL = "custom_carrier_label";
-    private static final String KEY_HARDWARE_KEYS = "hardware_keys";
-    private static final String KEY_NOTIF_STYLE = "notification_style";
+    public static final String TAG = "InterfaceSettings";
+    private static final String PREF_CUSTOM_CARRIER_LABEL = "custom_carrier_label";
     private static final String KEY_RECENTS_RAM_BAR = "recents_ram_bar";
-    private static final String KEY_FORCE_DUAL_PANE = "force_dual_pane";
-    private static final String KEY_VIBRATION_MULTIPLIER = "vibrator_multiplier";
-    private static final String KEY_LOW_BATTERY_WARNING_POLICY = "pref_low_battery_warning_policy";
-    private static final String KEY_NOTIFICATION_BEHAVIOUR = "notifications_behaviour";
 
-    private Preference mLcdDensity;
-    private PreferenceCategory mAdvanced;
-    private Preference mCustomLabel;
-    private Preference mNotifStyle;
-    private Preference mRamBar;
-    private CheckBoxPreference mDualPane;
-    private ListPreference mVibrationMultiplier;
-    private ListPreference mLowBatteryWarning;
-    private ListPreference mNotificationsBeh;
-    private ContentResolver mCr;
-    private PreferenceScreen mPrefSet;
+    Preference mCustomLabel;
+    Preference mRamBar;
+    Preference mLcdDensity;
+
+    Random randomGenerator = new Random();
+
+    String mCustomLabelText = null;
 
     int newDensityValue;
     DensityChanger densityFragment;
-    String mCustomLabelText = null;
+    Configuration mCurConfig = new Configuration();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPrefSet = getPreferenceScreen();
-        mCr = getContentResolver();
-
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.interface_settings);
 
-        PreferenceScreen prefs = getPreferenceScreen();
+        PreferenceScreen prefSet = getPreferenceScreen();
+
         mLcdDensity = findPreference("lcd_density_setup");
         String currentProperty = SystemProperties.get("ro.sf.lcd_density");
         try {
@@ -99,43 +96,20 @@ public class InterfaceSettings extends SettingsPreferenceFragment
         } catch (Exception e) {
             getPreferenceScreen().removePreference(mLcdDensity);
         }
-        mLcdDensity.setSummary(getResources().getString(R.string.current_lcd_density) + currentProperty);
-        mAdvanced = (PreferenceCategory) prefs.findPreference(ADVANCED_SETTINGS);
 
-        mCustomLabel = findPreference(KEY_CARRIER_LABEL);
+        mLcdDensity.setSummary(getResources().getString(R.string.current_lcd_density) + currentProperty);
+
+        mCustomLabel = findPreference(PREF_CUSTOM_CARRIER_LABEL);
         updateCustomLabelTextSummary();
 
-        int CurrentBeh = Settings.System.getInt(mCr, Settings.System.NOTIFICATIONS_BEHAVIOUR, 0);
-        mNotificationsBeh = (ListPreference) findPreference(KEY_NOTIFICATION_BEHAVIOUR);
-        mNotificationsBeh.setValue(String.valueOf(CurrentBeh));
-                mNotificationsBeh.setSummary(mNotificationsBeh.getEntry());
-        mNotificationsBeh.setOnPreferenceChangeListener(this);
-
-        // Only show the hardware keys config on a device that does not have a navbar
-        IWindowManager windowManager = IWindowManager.Stub.asInterface(
-                ServiceManager.getService(Context.WINDOW_SERVICE));
-        try {
-            if (windowManager.hasNavigationBar()) {
-                mAdvanced.removePreference(findPreference(KEY_HARDWARE_KEYS));
-            }
-        } catch (RemoteException e) {
-            // Do nothing
-        }
-
-        mNotifStyle = findPreference(KEY_NOTIF_STYLE);
         mRamBar = findPreference(KEY_RECENTS_RAM_BAR);
         updateRamBar();
-
-        mDualPane = (CheckBoxPreference) findPreference(KEY_FORCE_DUAL_PANE);
-        boolean preferDualPane = getResources().getBoolean(
-                com.android.internal.R.bool.preferences_prefer_dual_pane);
-        boolean dualPaneMode = Settings.System.getInt(getActivity().getContentResolver(),
-                Settings.System.FORCE_DUAL_PANE, (preferDualPane ? 1 : 0)) == 1;
-        mDualPane.setChecked(dualPaneMode);
+        
+        setHasOptionsMenu(true);
     }
 
     private void updateCustomLabelTextSummary() {
-        mCustomLabelText = Settings.System.getString(getActivity().getContentResolver(),
+        mCustomLabelText = Settings.System.getString(mContext.getContentResolver(),
                 Settings.System.CUSTOM_CARRIER_LABEL);
         if (mCustomLabelText == null || mCustomLabelText.length() == 0) {
             mCustomLabel.setSummary(R.string.custom_carrier_label_notset);
@@ -147,83 +121,19 @@ public class InterfaceSettings extends SettingsPreferenceFragment
     private void updateRamBar() {
         int ramBarMode = Settings.System.getInt(getActivity().getApplicationContext().getContentResolver(),
                 Settings.System.RECENTS_RAM_BAR_MODE, 0);
-        if (ramBarMode != 0) {
+
+        if (ramBarMode != 0)
             mRamBar.setSummary(getResources().getString(R.string.ram_bar_color_enabled));
-        } else {
+        else
             mRamBar.setSummary(getResources().getString(R.string.ram_bar_color_disabled));
-        }
-
-        mVibrationMultiplier = (ListPreference) findPreference(KEY_VIBRATION_MULTIPLIER);
-        if(mVibrationMultiplier != null) {
-            mVibrationMultiplier.setOnPreferenceChangeListener(this);
-            String currentValue = Float.toString(Settings.System.getFloat(getActivity()
-                    .getContentResolver(), Settings.System.VIBRATION_MULTIPLIER, 1));
-            mVibrationMultiplier.setValue(currentValue);
-            mVibrationMultiplier.setSummary(currentValue);
-
-        mLowBatteryWarning = (ListPreference) findPreference(KEY_LOW_BATTERY_WARNING_POLICY);
-        int lowBatteryWarning = Settings.System.getInt(getActivity().getContentResolver(),
-                                    Settings.System.POWER_UI_LOW_BATTERY_WARNING_POLICY, 3);
-        mLowBatteryWarning.setValue(String.valueOf(lowBatteryWarning));
-        mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntry());
-        mLowBatteryWarning.setOnPreferenceChangeListener(this);
-
-        }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        updateRamBar();
-    }
-
-    @Override
-    public void onPause() {
-        super.onResume();
-        updateRamBar();
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mVibrationMultiplier) {
-            String currentValue = (String) newValue;
-            float val = Float.parseFloat(currentValue);
-            Settings.System.putFloat(getActivity().getContentResolver(),
-                    Settings.System.VIBRATION_MULTIPLIER, val);
-            mVibrationMultiplier.setSummary(currentValue);
-            return true;
-        } else if (preference == mLowBatteryWarning) {
-            int lowBatteryWarning = Integer.valueOf((String) newValue);
-            int index = mLowBatteryWarning.findIndexOfValue((String) newValue);
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.POWER_UI_LOW_BATTERY_WARNING_POLICY, lowBatteryWarning);
-            mLowBatteryWarning.setSummary(mLowBatteryWarning.getEntries()[index]);
-            return true;
-        } else if (preference == mNotificationsBeh) {
-            String val = (String) newValue;
-                     Settings.System.putInt(mCr, Settings.System.NOTIFICATIONS_BEHAVIOUR,
-            Integer.valueOf(val));
-            int index = mNotificationsBeh.findIndexOfValue(val);
-            mNotificationsBeh.setSummary(mNotificationsBeh.getEntries()[index]);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
-            Preference preference) {
-        if (preference == mDualPane) {
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.FORCE_DUAL_PANE,
-                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
-            return true;
-        } else if (preference == mCustomLabel) {
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        if (preference == mCustomLabel) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setTitle(R.string.custom_carrier_label_title);
             alert.setMessage(R.string.custom_carrier_label_explain);
-
-            // Set an EditText view to get user input
             final EditText input = new EditText(getActivity());
             input.setText(mCustomLabelText != null ? mCustomLabelText : "");
             alert.setView(input);
@@ -236,17 +146,57 @@ public class InterfaceSettings extends SettingsPreferenceFragment
                     updateCustomLabelTextSummary();
                     Intent i = new Intent();
                     i.setAction("com.android.settings.LABEL_CHANGED");
-                    mContext.sendBroadcast(i);
+
+                    getActivity().getApplicationContext().sendBroadcast(i);
                 }
             });
             alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    // Canceled.
+
                 }
             });
-
             alert.show();
+        } else if (preference == mLcdDensity) {
+            ((PreferenceActivity) getActivity())
+            .startPreferenceFragment(new DensityChanger(), true);
+            return true;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateRamBar();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        updateRamBar();
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object value) {
+        final String key = preference.getKey();
+        return false;
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.user_interface, menu);
+    }
+
+    public void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        FileOutputStream out = new FileOutputStream(dst);
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
     }
 }

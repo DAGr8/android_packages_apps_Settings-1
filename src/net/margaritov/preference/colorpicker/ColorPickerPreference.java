@@ -213,6 +213,7 @@ public class ColorPickerPreference extends Preference implements
     /**
      * For custom purposes. Not used by ColorPickerPreferrence
      *
+     * 
      * @param color
      * @author Unknown
      */
